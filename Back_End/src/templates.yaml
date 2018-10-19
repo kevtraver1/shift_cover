@@ -1,0 +1,8 @@
+hello: Hello Kevin
+endpoint: mypawpicsdbinstance.cb6b8triq82g.us-east-1.rds.amazonaws.com
+username: ktravers
+passwrd: paw_pics
+profile_table: profiles
+database: PawPicsDB
+get_profile: SELECT * FROM {}  WHERE user_name = %(user_name)s;
+get_profiles: SELECT * FROM {};
