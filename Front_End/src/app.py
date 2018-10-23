@@ -78,15 +78,17 @@ def login():
     error = ''
     try:
         if request.method == "POST":
-            attempted_username = request.form['username']
-            attempted_password = request.form['password']
+            username = request.form['username']
+            password = request.form['password']
             #flash(attempted_username)
             #flash(attempted_password)
-            user_entered_password = attempted_password
             salt = "5gz"
-            db_password = user_entered_password+salt
+            db_password = password+salt
             h = hashlib.md5(db_password.encode())
-            contents = urllib.request.urlopen("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/get_profiles").read()
+            print("HELLO")
+            print("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/login?username=admin&password=admin".format(username,password))
+            contents = urllib.request.urlopen("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/Login?username={}&password={}}".format(username,password)).read()
+            print("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/login?username={}&password={}}".format(username,password))
             print(contents)
             if attempted_username == "admin" and attempted_password == "password":
                 session['logged_in'] = True

@@ -10,11 +10,11 @@ class DB_Connection:
 		self.__endpoint			= "shiftcoverdbinstance.cb6b8triq82g.us-east-1.rds.amazonaws.com"#render_template('endpoint')
 		self.__username			= "ktravers"#render_template('username')
 		self.__password			= "shift_cover"#render_template('password')
-		self.__profile_table	= "profiles"#render_template('profiles')
+		self.__account_table	= "accounts"#render_template('accounts')
 		self.__database			= "shiftcoverDB"#render_template('database')
 		self.__conn 			= None
 		self.__cursor			= None
-		self.__table_hash 		= {"profiles":self.__profile_table,
+		self.__table_hash 		= {"accounts":"accounts",
                                                    "relationship":"relationship",
                                                    "posts":"posts",
                                                    "ratings":"ratings",
@@ -69,76 +69,76 @@ class DB_Connection:
 		finally:
 			self.__end_connection()
 			return result
-	#PROFILES
-	def create_profile(self,username,password,profile_pic,role,company):
+	#accounts
+	def create_account(self,username,password,company,role,account_pic):
 		'''
-			create profile with username and password unless username is already taken
+			create account with username and password unless username is already taken
 			Inputs: String username string password
 				password will be hashed earlier
 			Outputs: Success or error message
 		
 		'''
 		try:
-			table_name 	= self.__table_hash["profiles"]
-			sql_command     = """INSERT INTO {} (username,password,profile_pic,role,company) VALUES
-                                        (%(username)s, %(password)s,%(profile_pic)s,%(role)s,%(company)s);""".format(table_name)
+			table_name 	= self.__table_hash["accounts"]
+			sql_command     = """INSERT INTO {} (username,password,account_pic,role,company) VALUES
+                                        (%(username)s, %(password)s,%(account_pic)s,%(role)s,%(company)s);""".format(table_name)
 			sql_values 	= {'username':username,
                                            "password":password,
-                                           "profile_pic":profile_pic,
+                                           "account_pic":account_pic,
                                            "role":role,
                                            "company":company}
 			result 		= self.__execute(sql_command,sql_values)
 		except Exception as e:
-			result = "Their was error creating profile {}".format(e)	
+			result = "Their was error creating account {}".format(e)	
 			raise e
 		finally:
 			return result
-	def get_profile(self,username):
+	def get_account(self,username):
 		'''
-			Returns profile array [int(profile_id),str(username),str(password),
-                        str(profile_pic) S3 bucket url to users profile pic,
+			Returns account array [int(account_id),str(username),str(password),
+                        str(account_pic) S3 bucket url to users account pic,
                         date Time user created account ]
                         All usernames are unique
 			Inputs:  String username
-			Outputs: profile array 
+			Outputs: account array 
 		'''
 		try:
-			table_name 	= self.__table_hash["profiles"]
+			table_name 	= self.__table_hash["accounts"]
 			sql_command     = "SELECT * FROM {}  WHERE username = %(username)s;".format(table_name)
 			sql_values 	= {'username':username}
 			result 		= self.__execute(sql_command,sql_values)
 		except Exception as e:
-			result = "Their was error getting profile {}".format(e)	
+			result = "Their was error getting account {}".format(e)	
 			raise e
 		finally:
 			return result
-	def get_profiles(self):
+	def get_accounts(self):
 		'''
-			Return all profiles as array of arrays [[int(profile_id),str(username),
-			str(password), str(profile_pic) S3 bucket url to users profile pic,
+			Return all accounts as array of arrays [[int(account_id),str(username),
+			str(password), str(account_pic) S3 bucket url to users account pic,
                         date Time user created account]... ]
 			Inputs: None
-			Ouputs: Array of all profiles arrays
+			Ouputs: Array of all accounts arrays
 		'''
 		try:
-			table_name 	= self.__table_hash["profiles"]
+			table_name 	= self.__table_hash["accounts"]
 			sql_command     = "SELECT * FROM {};".format(table_name)
 			sql_values 	= {}
 			result 		= self.__execute(sql_command,sql_values)
 		except Exception as e:
-			result = "Their was error getting profiles {}".format(e)	
+			result = "Their was error getting accounts {}".format(e)	
 			raise e
 		finally:
 			return result
-	def profile_login(self,username,password):
+	def account_login(self,username,password):
 		'''
                         Check if username and hashed password exist in database
 			Inputs:  String Username String Password
-			Outputs: return Profile array if credientals are correct,
+			Outputs: return account array if credientals are correct,
 			Empty array if Credenitals are wrong
 		'''
 		try:
-			table_name 	= self.__table_hash["profiles"]
+			table_name 	= self.__table_hash["accounts"]
 			sql_command     = """SELECT * FROM {} WHERE username = %(username)s
                                         AND password = %(password)s;""".format(table_name)
 			sql_values 	= {'username':username,
@@ -149,42 +149,43 @@ class DB_Connection:
 			raise e
 		finally:
 			return result
-	def update_profile(self,username,password,profile_pic,role,company):
+	def update_account(self,username,password,company,role,account_pic,account_id):
 		'''
-                        Update profile for all fields in profile, except profile id
-			Inputs: str(username),str(password),str(profile_pic),Int(profile_id)
-			Outputs: return Profile array if credientals are correct,
+                        Update account for all fields in account, except account id
+			Inputs: str(username),str(password),str(account_pic),Int(account_id)
+			Outputs: return account array if credientals are correct,
 			Empty array if Credenitals are wrong
 		'''
 		try:
-			table_name 	= self.__table_hash["profiles"]
+			table_name 	= self.__table_hash["accounts"]
 			sql_command     = """UPDATE {} SET username = %(username)s,
-                                        password = %(password)s, profile_pic = %(profile_pic)s, role = %(role)s, company = %(company)s
-                                        WHERE profile_id = %(profile_id)s;""".format(table_name)
+                                        password = %(password)s, account_pic = %(account_pic)s, role = %(role)s, company = %(company)s
+                                        WHERE account_id = %(account_id)s;""".format(table_name)
 			sql_values 	= {'username':username,
                                            "password":password,
-                                           "profile_pic":profile_pic,
+                                           "account_pic":account_pic,
                                            "role":role,
-                                           "company":company}
+                                           "company":company,
+                                           "account_id":account_id}
 			result 		= self.__execute(sql_command,sql_values)
 		except Exception as e:
-			result = "Their was updating profile {}".format(e)	
+			result = "Their was updating account {}".format(e)	
 			raise e
 		finally:
 			return result
-	def delete_profile(self, profile_id):
+	def delete_account(self, account_id):
 		'''
-			Delete profile from profiles database
-			Inputs: Int profile_id
+			Delete account from accounts database
+			Inputs: Int account_id
 			Outputs: None
 		'''
 		try:
-			table_name 	= self.__table_hash["profiles"]
-			sql_command     = "DELETE FROM {} WHERE profile_id = %(profile_id)s;".format(table_name)
-			sql_values 	= {'profile_id':profile_id}
+			table_name 	= self.__table_hash["accounts"]
+			sql_command = "DELETE FROM {} WHERE account_id = %(account_id)s;".format(table_name)
+			sql_values 	= {'account_id':account_id}
 			result 		= self.__execute(sql_command,sql_values)
 		except Exception as e:
-			result = "Their was error deleting profile {}".format(e)	
+			result = "Their was error deleting account {}".format(e)	
 			raise e
 		finally:
 			return result
