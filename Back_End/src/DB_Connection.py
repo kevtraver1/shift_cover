@@ -10,7 +10,7 @@ class DB_Connection:
 		self.__endpoint			= "shiftcoverdbinstance.cb6b8triq82g.us-east-1.rds.amazonaws.com"#render_template('endpoint')
 		self.__username			= "ktravers"#render_template('username')
 		self.__password			= "shift_cover"#render_template('password')
-		self.__profile_table	        = "profiles"#render_template('profiles')
+		self.__profile_table	= "profiles"#render_template('profiles')
 		self.__database			= "shiftcoverDB"#render_template('database')
 		self.__conn 			= None
 		self.__cursor			= None

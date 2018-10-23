@@ -56,7 +56,11 @@ class Get_Profile(Resource):
         connection  = DB_Connection()
         username  = request.args.get('username', None)
         response    = connection.get_profile(username)
-        return response 
+        return response
+class Connection_Test(Resource):
+    def get(self):
+        return "HELLO WORLD HERE I COME!!!"
+api.add_resource(Connection_Test,'/') 
 api.add_resource(Login,'/login')
 api.add_resource(Create_Account,'/create_account')
 api.add_resource(Update_Profile,'/update_profile')
