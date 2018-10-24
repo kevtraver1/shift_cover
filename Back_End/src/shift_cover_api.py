@@ -28,6 +28,7 @@ class Create_Account(Resource):
         account_pic = request.args.get('account_pic', None)
         role        = request.args.get('role', None)
         response    = connection.create_account(username,password,company,role,account_pic)
+
         return json.dumps(response, indent=4, sort_keys=True, default=str)
 class Update_Account(Resource):
     def get(self):
@@ -61,6 +62,10 @@ class Get_Account(Resource):
 class Connection_Test(Resource):
     def get(self):
         return "HELLO WORLD HERE I COME!!!"
+
+def create_output_hash(response):
+    
+
 api.add_resource(Connection_Test,'/') 
 api.add_resource(Login,'/login')
 api.add_resource(Create_Account,'/create_account')

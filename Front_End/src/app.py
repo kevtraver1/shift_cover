@@ -85,10 +85,7 @@ def login():
             salt = "5gz"
             db_password = password+salt
             h = hashlib.md5(db_password.encode())
-            print("HELLO")
-            print("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/login?username=admin&password=admin".format(username,password))
-            contents = urllib.request.urlopen("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/Login?username={}&password={}}".format(username,password)).read()
-            print("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/login?username={}&password={}}".format(username,password))
+            contents = urllib.request.urlopen("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/login?username={}&password={}".format(username,password)).read()
             print(contents)
             if attempted_username == "admin" and attempted_password == "password":
                 session['logged_in'] = True
