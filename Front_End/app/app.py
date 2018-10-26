@@ -24,7 +24,7 @@ def register_page():
     error = ''
     try:
         if request.method == "POST":
-            print(request.form['confirm'])
+            
             #check if all fileds are filled
             for k, v in request.form.items():
                 if v == "":
@@ -34,14 +34,29 @@ def register_page():
                 flash("Passwords Don't Match")
             #check if username is taken
             #place holder for api call
-            elif request.form['username'] == "taken":
-                flash("Username is Taken")
+            #elif request.form['username'] == "taken":
+            #    flash("Username is Taken")
+            username = request.form['username']
+            password = request.form['password']
+            company = request.form['company']
+            occupation = request.form['occupation']
+            email = request.form['email']
+            first_name = request.form['first_name']
+            las_name = request.form['last_name']
+            #flash(attempted_username)
+            #flash(attempted_password)
+            salt = "5gz"
+            db_password = password+salt
+            h = hashlib.md5(db_password.encode())
+            contents = urllib.request.urlopen("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/create_account?username={}&password=i{}&company={}&occupation={}&email={}&first_name={}&last_name={}".format(username,password,company,occupation,email,first_name,last_name)).read()
             #create account and send to dashboard
-            if request.form['username'] == "admin":
-                session['logged_in'] = True
-                session['username'] = request.form['username']
-                return redirect(url_for('dashboard'))
-				
+            print(contents)
+            #if request.form['username'] == "admin":
+            #   session['logged_in'] = True
+            #   session['username'] = request.form['username']
+            #   return redirect(url_for('dashboard'))
+            if contents:
+                return redirect(url_for('dashboard'))	
             else:
                 error = "Invalid credentials. Try Again."
             gc.collect()

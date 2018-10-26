@@ -26,11 +26,11 @@ class Create_Account(Resource):
         password        = request.args.get('password', None)
         company         = request.args.get('company', None)
         account_picture = request.args.get('account_picture', None)
-        job_title       = request.args.get('job_title', None)
+        occupation       = request.args.get('occupation', None)
         email           = request.args.get('email', None)
         first_name      = request.args.get('first_name', None)
         last_name       = request.args.get('last_name', None)
-        response        = connection.create_account(username,password,company,job_title,email,first_name,last_name)
+        response        = connection.create_account(username,password,company,occupation,email,first_name,last_name)
         return response#json.dumps(response, indent=4, sort_keys=True, default=str)
 class Update_Account(Resource):
     def get(self):
@@ -39,12 +39,12 @@ class Update_Account(Resource):
         password        = request.args.get('password', None)
         company         = request.args.get('company', None)
         account_picture = request.args.get('account_picture', None)
-        job_title       = request.args.get('job_title', None)
+        occupation      = request.args.get('occupation', None)
         email           = request.args.get('email', None)
         first_name      = request.args.get('first_name', None)
         last_name       = request.args.get('last_name', None)
         account_id      = request.args.get('account_id', None)
-        response        = connection.update_account(username,password,company,job_title,email,first_name,last_name,account_picture,account_id)
+        response        = connection.update_account(username,password,company,occupation,email,first_name,last_name,account_picture,account_id)
         return response#json.dumps(response, indent=4, sort_keys=True, default=str)
 class Delete_Account(Resource):
     def get(self):
@@ -82,8 +82,8 @@ api.add_resource(Get_Account,'/get_account')
 if __name__=="__main__":
 	app.run()
 #http://127.0.0.1:5000/login?username=kevin&password=travers
-#create_account?username=DELETEME&password=FAKEPASSWORD&company=cbs&job_title=VOD_system_ADMIN&account_picture=MY_FACE
-#update_account?username=ktraver1&password=pa55w0rd&company=cbs&job_title=Developer&email=kevtraver1@cbs.com&first_name=kevin&last_name=travers&account_id=5
+#create_account?username=DELETEME&password=FAKEPASSWORD&company=cbs&occupation=VOD_system_ADMIN&account_picture=MY_FACE
+#update_account?username=ktraver1&password=pa55w0rd&company=cbs&occupation=Developer&email=kevtraver1@cbs.com&first_name=kevin&last_name=travers&account_id=5
 #api created/ backend clean up
 #rds create and connect
 #local connection test

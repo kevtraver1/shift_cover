@@ -1,7 +1,7 @@
 import pdb
 from flask import Flask, render_template
 import pymysql
-
+#store number 
 #Add email
 class DB_Connection:
 	def __init__(self):
@@ -91,7 +91,7 @@ class DB_Connection:
 		#use connection.insert_id() to return the id of last inserted on this connection
 		pass
 	#accounts
-	def create_account(self,username,password,company,job_title,email,first_name,last_name):
+	def create_account(self,username,password,company,occupation,email,first_name,last_name):
 		'''
 			create account with username and password unless username is already taken
 			Inputs: String username string password
@@ -101,11 +101,11 @@ class DB_Connection:
 		'''
 		try:
 			table_name 	= self.__table_hash["accounts"]
-			sql_command     = """INSERT INTO {} (username,password,company,job_title,email,first_name,last_name) VALUES
-			(%(username)s, %(password)s,%(company)s,%(job_title)s,%(email)s,%(first_name)s,%(last_name)s);""".format(table_name)
+			sql_command     = """INSERT INTO {} (username,password,company,occupation,email,first_name,last_name) VALUES
+			(%(username)s, %(password)s,%(company)s,%(occupation)s,%(email)s,%(first_name)s,%(last_name)s);""".format(table_name)
 			sql_values 	= {"username":username,
 							"password":password,
-							"job_title":job_title,
+							"occupation":occupation,
 							"company":company,
 							"email":email,
 							"first_name":first_name,
@@ -168,7 +168,7 @@ class DB_Connection:
 			result = False
 		finally:
 			return result
-	def update_account(self,username,password,company,job_title,email,first_name,last_name,account_picture,account_id):
+	def update_account(self,username,password,company,occupation,email,first_name,last_name,account_picture,account_id):
 		'''
             Update account for all fields in account, except account id
 			Inputs: str(username),str(password),str(account_picture),Int(account_id)
@@ -178,13 +178,13 @@ class DB_Connection:
 		try:
 			table_name 	= self.__table_hash["accounts"]
 			sql_command     = """UPDATE {} SET username = %(username)s,
-								password = %(password)s, account_picture = %(account_picture)s, job_title = %(job_title)s, 
+								password = %(password)s, account_picture = %(account_picture)s, occupation = %(occupation)s, 
 								company = %(company)s, email = %(email)s, first_name = %(first_name)s, last_name = %(last_name)s
 								WHERE account_id = %(account_id)s;""".format(table_name)
 			sql_values 	= {'username':username,
 							"password":password,
 							"account_picture":account_picture,
-							"job_title":job_title,
+							"occupation":occupation,
 							"company":company,
 							"email":email,
 							"first_name":first_name,
