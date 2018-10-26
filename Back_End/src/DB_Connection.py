@@ -2,6 +2,8 @@ import pdb
 from flask import Flask, render_template
 import pymysql
 
+
+#Add email
 class DB_Connection:
 	def __init__(self):
 		'''
@@ -10,16 +12,15 @@ class DB_Connection:
 		self.__endpoint			= "shiftcoverdbinstance.cb6b8triq82g.us-east-1.rds.amazonaws.com"#render_template('endpoint')
 		self.__username			= "ktravers"#render_template('username')
 		self.__password			= "shift_cover"#render_template('password')
-		self.__account_table	= "accounts"#render_template('accounts')
 		self.__database			= "shiftcoverDB"#render_template('database')
 		self.__conn 			= None
 		self.__cursor			= None
 		self.__table_hash 		= {"accounts":"accounts",
-                                                   "relationship":"relationship",
-                                                   "posts":"posts",
-                                                   "ratings":"ratings",
-                                                   "comments":"comments",
-                                                   "messages":"messages"}
+									"relationship":"relationship",
+									"posts":"posts",
+									"ratings":"ratings",
+									"comments":"comments",
+									"messages":"messages"}
 	def __start_connection(self):
 		'''
 			Creates connection to database creating __conn(connection)
@@ -64,8 +65,7 @@ class DB_Connection:
 			result = self.__cursor.fetchall()
 			self.__conn.commit()
 		except Exception as e:
-			result = "Their was error {}".format(e)
-			raise e
+			return False
 		finally:
 			self.__end_connection()
 			return result
@@ -89,8 +89,7 @@ class DB_Connection:
                                            "company":company}
 			result 		= self.__execute(sql_command,sql_values)
 		except Exception as e:
-			result = "Their was error creating account {}".format(e)	
-			raise e
+			result = False
 		finally:
 			return result
 	def get_account(self,username):
@@ -108,8 +107,7 @@ class DB_Connection:
 			sql_values 	= {'username':username}
 			result 		= self.__execute(sql_command,sql_values)
 		except Exception as e:
-			result = "Their was error getting account {}".format(e)	
-			raise e
+			result = False
 		finally:
 			return result
 	def get_accounts(self):
@@ -126,8 +124,7 @@ class DB_Connection:
 			sql_values 	= {}
 			result 		= self.__execute(sql_command,sql_values)
 		except Exception as e:
-			result = "Their was error getting accounts {}".format(e)	
-			raise e
+			result = False
 		finally:
 			return result
 	def account_login(self,username,password):
@@ -145,13 +142,12 @@ class DB_Connection:
                                            "password":password}
 			result 		= self.__execute(sql_command,sql_values)
 		except Exception as e:
-			result = "Their checking credientals {}".format(e)	
-			raise e
+			result = False
 		finally:
 			return result
 	def update_account(self,username,password,company,role,account_pic,account_id):
 		'''
-                        Update account for all fields in account, except account id
+            Update account for all fields in account, except account id
 			Inputs: str(username),str(password),str(account_pic),Int(account_id)
 			Outputs: return account array if credientals are correct,
 			Empty array if Credenitals are wrong
@@ -168,9 +164,9 @@ class DB_Connection:
                                            "company":company,
                                            "account_id":account_id}
 			result 		= self.__execute(sql_command,sql_values)
+			result 		= True
 		except Exception as e:
-			result = "Their was updating account {}".format(e)	
-			raise e
+			result = False
 		finally:
 			return result
 	def delete_account(self, account_id):
@@ -185,8 +181,8 @@ class DB_Connection:
 			sql_values 	= {'account_id':account_id}
 			result 		= self.__execute(sql_command,sql_values)
 		except Exception as e:
-			result = "Their was error deleting account {}".format(e)	
-			raise e
+			result 		= False	
+			#raise e
 		finally:
 			return result
 	

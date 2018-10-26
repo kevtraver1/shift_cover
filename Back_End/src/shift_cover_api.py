@@ -59,12 +59,13 @@ class Get_Account(Resource):
         username    = request.args.get('username', None)
         response    = connection.get_account(username)
         return json.dumps(response, indent=4, sort_keys=True, default=str)
+
 class Connection_Test(Resource):
     def get(self):
         return "HELLO WORLD HERE I COME!!!"
 
-def create_output_hash(response):
-    
+def create_output_json(response):
+    pass
 
 api.add_resource(Connection_Test,'/') 
 api.add_resource(Login,'/login')
@@ -77,7 +78,7 @@ api.add_resource(Get_Account,'/get_account')
 if __name__=="__main__":
 	app.run()
 #http://127.0.0.1:5000/login?username=kevin&password=travers
-#update_account?username=DELETEME&password=FAKEPASSWORD&company=cbs&role=VOD_system_ADMIN&account_pic=MY_FACE&account_id=4
+#create_account?username=DELETEME&password=FAKEPASSWORD&company=cbs&role=VOD_system_ADMIN&account_pic=MY_FACE
 #api created/ backend clean up
 #rds create and connect
 #local connection test
