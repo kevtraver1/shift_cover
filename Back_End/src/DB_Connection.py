@@ -2,7 +2,6 @@ import pdb
 from flask import Flask, render_template
 import pymysql
 
-
 #Add email
 class DB_Connection:
 	def __init__(self):
@@ -18,8 +17,6 @@ class DB_Connection:
 		self.__table_hash 		= {"accounts":"accounts",
 									"relationship":"relationship",
 									"posts":"posts",
-									"ratings":"ratings",
-									"comments":"comments",
 									"messages":"messages"}
 	def __start_connection(self):
 		'''
@@ -47,6 +44,7 @@ class DB_Connection:
 		try:
 			self.__conn.close()
 		except Exception as e:
+			self.__conn.rollback()
 			result = False
 		finally:
 			return result
@@ -61,16 +59,39 @@ class DB_Connection:
 		'''
 		try:
 			self.__start_connection()
-			self.__cursor.execute(sql_command,sql_values)
-			result = self.__cursor.fetchall()
+			affect_rows = self.__cursor.execute(sql_command,sql_values)
+			result 		= self.__cursor.fetchall()
+			if not result:
+				result = affect_rows
+			#inserted new row
+			#if self.__conn.insert_id():
+				#print(self.__conn.insert_id())#None no insert number if inserted 
+				#pass table along in future
+				#account_id = self.__conn.insert_id()
+				#sql_command="SELECT * FROM accounts WHERE  account_id = %(account_id)s;"
+				#sql_values={"account_id":account_id}
+				#result 		= self.__execute(sql_command,sql_values)
+				
+			#convert tupple rturned from mysql and instead return json
+			if self.__cursor.description:
+				row_headers =[row_header[0] for row_header in self.__cursor.description]
+				json_data 	= []
+				for data in result:
+					json_data.append(dict(zip(row_headers,data)))
+				if result:
+					result = json_data
 			self.__conn.commit()
 		except Exception as e:
-			return False
+			self.__conn.rollback()
+			result = False
 		finally:
 			self.__end_connection()
 			return result
+	def __create_result_hash():
+		#use connection.insert_id() to return the id of last inserted on this connection
+		pass
 	#accounts
-	def create_account(self,username,password,company,role,account_pic):
+	def create_account(self,username,password,company,job_title,email,first_name,last_name):
 		'''
 			create account with username and password unless username is already taken
 			Inputs: String username string password
@@ -80,13 +101,15 @@ class DB_Connection:
 		'''
 		try:
 			table_name 	= self.__table_hash["accounts"]
-			sql_command     = """INSERT INTO {} (username,password,account_pic,role,company) VALUES
-                                        (%(username)s, %(password)s,%(account_pic)s,%(role)s,%(company)s);""".format(table_name)
-			sql_values 	= {'username':username,
-                                           "password":password,
-                                           "account_pic":account_pic,
-                                           "role":role,
-                                           "company":company}
+			sql_command     = """INSERT INTO {} (username,password,company,job_title,email,first_name,last_name) VALUES
+			(%(username)s, %(password)s,%(company)s,%(job_title)s,%(email)s,%(first_name)s,%(last_name)s);""".format(table_name)
+			sql_values 	= {"username":username,
+							"password":password,
+							"job_title":job_title,
+							"company":company,
+							"email":email,
+							"first_name":first_name,
+							"last_name":last_name}
 			result 		= self.__execute(sql_command,sql_values)
 		except Exception as e:
 			result = False
@@ -95,7 +118,7 @@ class DB_Connection:
 	def get_account(self,username):
 		'''
 			Returns account array [int(account_id),str(username),str(password),
-                        str(account_pic) S3 bucket url to users account pic,
+                        str(account_picture) S3 bucket url to users account pic,
                         date Time user created account ]
                         All usernames are unique
 			Inputs:  String username
@@ -113,7 +136,7 @@ class DB_Connection:
 	def get_accounts(self):
 		'''
 			Return all accounts as array of arrays [[int(account_id),str(username),
-			str(password), str(account_pic) S3 bucket url to users account pic,
+			str(password), str(account_picture) S3 bucket url to users account pic,
                         date Time user created account]... ]
 			Inputs: None
 			Ouputs: Array of all accounts arrays
@@ -145,26 +168,29 @@ class DB_Connection:
 			result = False
 		finally:
 			return result
-	def update_account(self,username,password,company,role,account_pic,account_id):
+	def update_account(self,username,password,company,job_title,email,first_name,last_name,account_picture,account_id):
 		'''
             Update account for all fields in account, except account id
-			Inputs: str(username),str(password),str(account_pic),Int(account_id)
+			Inputs: str(username),str(password),str(account_picture),Int(account_id)
 			Outputs: return account array if credientals are correct,
 			Empty array if Credenitals are wrong
 		'''
 		try:
 			table_name 	= self.__table_hash["accounts"]
 			sql_command     = """UPDATE {} SET username = %(username)s,
-                                        password = %(password)s, account_pic = %(account_pic)s, role = %(role)s, company = %(company)s
-                                        WHERE account_id = %(account_id)s;""".format(table_name)
+								password = %(password)s, account_picture = %(account_picture)s, job_title = %(job_title)s, 
+								company = %(company)s, email = %(email)s, first_name = %(first_name)s, last_name = %(last_name)s
+								WHERE account_id = %(account_id)s;""".format(table_name)
 			sql_values 	= {'username':username,
-                                           "password":password,
-                                           "account_pic":account_pic,
-                                           "role":role,
-                                           "company":company,
-                                           "account_id":account_id}
+							"password":password,
+							"account_picture":account_picture,
+							"job_title":job_title,
+							"company":company,
+							"email":email,
+							"first_name":first_name,
+							"last_name":last_name,
+							"account_id":account_id}
 			result 		= self.__execute(sql_command,sql_values)
-			result 		= True
 		except Exception as e:
 			result = False
 		finally:
