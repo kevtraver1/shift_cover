@@ -26,7 +26,7 @@ class Create_Account(Resource):
         password        = request.args.get('password', None)
         company         = request.args.get('company', None)
         account_picture = request.args.get('account_picture', None)
-        occupation       = request.args.get('occupation', None)
+        occupation      = request.args.get('occupation', None)
         email           = request.args.get('email', None)
         first_name      = request.args.get('first_name', None)
         last_name       = request.args.get('last_name', None)

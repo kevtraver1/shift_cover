@@ -31,24 +31,32 @@ def register_page():
                     flash("{} must be filled in".format(k))
             #check if passwords match
             if request.form['password'] != request.form['confirm']:
-                flash("Passwords Don't Match")
+               flash("Passwords Don't Match")
             #check if username is taken
             #place holder for api call
             #elif request.form['username'] == "taken":
             #    flash("Username is Taken")
+            print("HELLO WOLRD")
             username = request.form['username']
             password = request.form['password']
             company = request.form['company']
             occupation = request.form['occupation']
             email = request.form['email']
             first_name = request.form['first_name']
-            las_name = request.form['last_name']
+            last_name = request.form['last_name']
             #flash(attempted_username)
             #flash(attempted_password)
             salt = "5gz"
             db_password = password+salt
             h = hashlib.md5(db_password.encode())
-            contents = urllib.request.urlopen("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/create_account?username={}&password=i{}&company={}&occupation={}&email={}&first_name={}&last_name={}".format(username,password,company,occupation,email,first_name,last_name)).read()
+            print(";ets do this")
+            creds = "https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/create_account?username={}&password={}&company={}&occupation={}&email={}&first_name={}&last_name={}".format(username,password,company,occupation,email,first_name,last_name)
+            print(creds)
+            #contents = urllib.request.urlopen("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/create_account?username={}&password=i{}&company={}&occupation={}&email={}&first_name={}&last_name={}".format(username,password,company,occupation,email,first_name,last_name)).read()
+            contents = urllib.request.urlopen("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/get_accounts?account_id=100").read()
+            #better solutions
+            #https://stackoverflow.com/questions/2018026/what-are-the-differences-between-the-urllib-urllib2-and-requests-module
+            #http://docs.python-requests.org/en/latest/index.html
             #create account and send to dashboard
             print(contents)
             #if request.form['username'] == "admin":
