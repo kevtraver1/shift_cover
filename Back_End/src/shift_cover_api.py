@@ -78,6 +78,7 @@ api.add_resource(Update_Account,'/update_account')
 api.add_resource(Delete_Account,'/delete_account')
 api.add_resource(Get_Accounts,'/get_accounts')
 api.add_resource(Get_Account,'/get_account')
+#JOB_TITLE is STILL the error change it to occupation
 
 if __name__=="__main__":
 	app.run()

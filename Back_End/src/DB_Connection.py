@@ -101,7 +101,7 @@ class DB_Connection:
 		'''
 		try:
 			table_name 	= self.__table_hash["accounts"]
-			sql_command     = """INSERT INTO {} (username,password,company,occupation,email,first_name,last_name) VALUES
+			sql_command     = """INSERT INTO {} (username,password,company,job_title,email,first_name,last_name) VALUES
 			(%(username)s, %(password)s,%(company)s,%(occupation)s,%(email)s,%(first_name)s,%(last_name)s);""".format(table_name)
 			sql_values 	= {"username":username,
 							"password":password,
@@ -178,7 +178,7 @@ class DB_Connection:
 		try:
 			table_name 	= self.__table_hash["accounts"]
 			sql_command     = """UPDATE {} SET username = %(username)s,
-								password = %(password)s, account_picture = %(account_picture)s, occupation = %(occupation)s, 
+								password = %(password)s, account_picture = %(account_picture)s, job_title = %(occupation)s, 
 								company = %(company)s, email = %(email)s, first_name = %(first_name)s, last_name = %(last_name)s
 								WHERE account_id = %(account_id)s;""".format(table_name)
 			sql_values 	= {'username':username,

@@ -5,6 +5,7 @@ import hashlib
 from functools import wraps
 import boto3
 import urllib.request
+import requests
 
 app = Flask(__name__)
 app.secret_key = b'A\x8by\xbdl\xbcpj>.EfWo,\xf2'
@@ -32,11 +33,6 @@ def register_page():
             #check if passwords match
             if request.form['password'] != request.form['confirm']:
                flash("Passwords Don't Match")
-            #check if username is taken
-            #place holder for api call
-            #elif request.form['username'] == "taken":
-            #    flash("Username is Taken")
-            print("HELLO WOLRD")
             username = request.form['username']
             password = request.form['password']
             company = request.form['company']
@@ -44,27 +40,16 @@ def register_page():
             email = request.form['email']
             first_name = request.form['first_name']
             last_name = request.form['last_name']
-            #flash(attempted_username)
-            #flash(attempted_password)
             salt = "5gz"
             db_password = password+salt
-            h = hashlib.md5(db_password.encode())
-            print(";ets do this")
-            creds = "https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/create_account?username={}&password={}&company={}&occupation={}&email={}&first_name={}&last_name={}".format(username,password,company,occupation,email,first_name,last_name)
-            print(creds)
-            #contents = urllib.request.urlopen("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/create_account?username={}&password=i{}&company={}&occupation={}&email={}&first_name={}&last_name={}".format(username,password,company,occupation,email,first_name,last_name)).read()
-            contents = urllib.request.urlopen("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/get_accounts?account_id=100").read()
-            #better solutions
-            #https://stackoverflow.com/questions/2018026/what-are-the-differences-between-the-urllib-urllib2-and-requests-module
-            #http://docs.python-requests.org/en/latest/index.html
-            #create account and send to dashboard
-            print(contents)
-            #if request.form['username'] == "admin":
-            #   session['logged_in'] = True
-            #   session['username'] = request.form['username']
-            #   return redirect(url_for('dashboard'))
-            if contents:
-                return redirect(url_for('dashboard'))	
+            hashed_password = hashlib.md5(db_password.encode())
+            user_data = {"username":username,"password":password,"company":company,"occupation":occupation,"email":email,"first_name":first_name,"last_name":last_name}
+            contents = requests.get("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/create_account",user_data)
+            response = contents.json()
+
+            if response:
+                #send email verifacation
+                return redirect(url_for('login'))	
             else:
                 error = "Invalid credentials. Try Again."
             gc.collect()
@@ -85,6 +70,7 @@ def dashboard():
                 print("Friend SENT")
             if "Friend_Name" in request.form:
                 print("Ok use name and id make sure its unique")
+        #use sessiion data as well to personalize veiwing
         return render_template("dashboard.html",TOPIC_DICT = TOPIC_DICT)
     except Exception as e:
         return render_template("500.html", error = str(e))
@@ -107,12 +93,21 @@ def login():
             #flash(attempted_password)
             salt = "5gz"
             db_password = password+salt
-            h = hashlib.md5(db_password.encode())
-            contents = urllib.request.urlopen("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/login?username={}&password={}".format(username,password)).read()
-            print(contents)
-            if attempted_username == "admin" and attempted_password == "password":
-                session['logged_in'] = True
-                session['username'] = request.form['username']
+            hashed_password = hashlib.md5(db_password.encode())
+            user_data = {"username":username,"password":password}
+            contents = requests.get("https://evzc9p1un8.execute-api.us-east-1.amazonaws.com/dev/account_login",user_data)#account_login?username={}&password={}".format(username,password)).read()
+            response_hash = contents.json()[0]
+            if response_hash['username']:
+                session['logged_in']    = True
+                session['username']     = response_hash['username']
+                session['password']     = response_hash['password']
+                session['company']      = response_hash['company']
+                session['occupation']   = response_hash['job_title']
+                session['email']        = response_hash['email']
+                session['first_name']   = response_hash['first_name']
+                session['last_name']    = response_hash['last_name']
+                session['account_id']   = response_hash['account_id']
+                session['account_picture']= response_hash['account_picture']
                 return redirect(url_for('dashboard'))
 				
             else:
