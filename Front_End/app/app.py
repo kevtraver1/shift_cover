@@ -61,7 +61,7 @@ def register_page():
         return render_template("register.html", error = error) 
 
 @app.route('/dashboard/', methods=["GET","POST","FRIEND"])
-@login_required
+#@login_required
 def dashboard():
     try:
         if request.method == "POST":
@@ -71,7 +71,7 @@ def dashboard():
             if "Friend_Name" in request.form:
                 print("Ok use name and id make sure its unique")
         #use sessiion data as well to personalize veiwing
-        return render_template("dashboard.html",TOPIC_DICT = TOPIC_DICT)
+        return render_template("map.html",TOPIC_DICT = TOPIC_DICT)
     except Exception as e:
         return render_template("500.html", error = str(e))
 @app.route("/logout/")
