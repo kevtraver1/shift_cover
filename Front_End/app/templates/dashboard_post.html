@@ -59,21 +59,40 @@ $(document).ready( function() {
 		    readURL(this);
 		}); 	
 	});
+	
 </script>
+
 		<div class="container">
-			<div class="row main">
-				<div class="panel-heading">
+			<div class="panel-heading">
 	               <div class="panel-title text-center">
-	               		<h1 class="title">Create Post</h1>
+	               		<h1 class="title">Create Request</h1>
 	               		<hr />
 	               	</div>
-	            </div> 
+	        </div> 
+			<div class="row main">
+
 				<div class="main-login main-center">
-					<form class="form-horizontal" method="post" action="#">
-						
+					<form class="form-horizontal" method="post" action="#" >
+						<div class="form-group row">
+							<label for="date" class="col-2 col-form-label">Date</label>
+							<div class="col-10">
+								<input class="form-control" type="date" value="2011-08-19" name="date" id="date">
+							</div>
+						</div>						
+						<div class="form-group row">
+							<label for="start_time" class="col-2 col-form-label">Start Time</label>
+							<div class="col-10">
+								<input class="form-control" type="time" value="13:45:00" name="start_time" id="start_time">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="end_time" class="col-2 col-form-label">End Time</label>
+							<div class="col-10">
+								<input class="form-control" type="time" value="13:45:00" name="end_time" id="end_time">
+							</div>
+						</div>
 
-
-						<div class="form-group">
+						<div class="form-group row">
 							<label for="title" class="cols-sm-2 control-label">Title</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
@@ -83,15 +102,15 @@ $(document).ready( function() {
 							</div>
 						</div>
 
-						<div class="form-group">
+						<div class="form-group row">
 							<label for="description" class="col-4 col-form-label">Description</label> 
 								<div class="col-8">
 									<textarea id="description" name="description" cols="40" rows="4" class="form-control"></textarea>
 								</div>
 						</div>
 
-						<div class="form-group ">
-							<button type="submit" class="btn btn-primary btn-lg btn-block login-button">Post</button>
+						<div class="form-group row">
+							<button type="submit" class="btn btn-primary btn-lg btn-block login-button" id="post_id" name="post_id" value="request_time" >Post</button>
 						</div>
 						
 					</form>

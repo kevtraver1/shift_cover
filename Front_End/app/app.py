@@ -60,11 +60,17 @@ def register_page():
         #flash(e)
         return render_template("register.html", error = error) 
 
-@app.route('/dashboard/', methods=["GET","POST","FRIEND"])
+@app.route('/dashboard/', methods=["GET","POST"])
 @login_required
 def dashboard():
     try:
+        
+        print(request.form)
+        #use decorator for validate forms
+        
         if request.method == "POST":
+            if request.form["post_id"] == "request_time":
+                print("WOOOOOOOOO")
             if "friend_request" in request.form:
                 print(request)
                 print("Friend SENT")
