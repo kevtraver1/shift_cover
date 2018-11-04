@@ -12,16 +12,18 @@
 				<a class="nav-link"  href="#Feed" aria-controls="Feed" role="tab" data-toggle="tab">Feed</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link"  href="#Create_Post" aria-controls="Create_Post" role="tab" data-toggle="tab">Create Post</a>
+				<a class="nav-link"  href="#Create_Request" aria-controls="Create_Request" role="tab" data-toggle="tab">Request Time Cover</a>
 			</li>
 
 			<li class="nav-item">
-				<a class="nav-link"  href="#Friends" aria-controls="Friends" role="tab" data-toggle="tab">Friends</a>
+				<a class="nav-link"  href="#Schedule" aria-controls="Schedule" role="tab" data-toggle="tab">My Schedule</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link"  href="#Detector" aria-controls="Detector" role="tab" data-toggle="tab">Good Boy/Girl Detector</a>
+				<a class="nav-link"  href="#Create_Schedule" aria-controls="Create_Schedule" role="tab" data-toggle="tab">Create Schedule</a>
 			</li>
-			
+			<li class="nav-item">
+				<a class="nav-link"  href="#Employees" aria-controls="Employees" role="tab" data-toggle="tab">Employees</a>
+			</li>
 		</ul>
 	</ul>
 
@@ -51,19 +53,29 @@
 			{% endfor %}
 		</ul>
 	</div>
-    <div role="tabpanel" class="tab-pane fade" id="Create_Post">
+    <div role="tabpanel" class="tab-pane fade" id="Create_Request">
 		<ul>
 			{% include 'dashboard_post.html' %}
 		</ul>
 	</div>
-	<div role="tabpanel" class="tab-pane fade" id="Friends">
+	<div role="tabpanel" class="tab-pane fade" id="Schedule">
 		<ul>
-			Send Friend Request
+			Not implmented yet. But your current shudle will dispaly here
+		</ul>
+	</div>
+	<div role="tabpanel" class="tab-pane fade" id="Create_Schedule">
+		<ul>
+			Not implmented yet. Only Manger can view this. They will be able to create shdule for all emplpyees here
+		</ul>
+	</div>
+	<div role="tabpanel" class="tab-pane fade" id="Employees">
+		<ul>
+			Create Emplpyee Account
 			<div class="main-friend-requests main-center">
 				<form class="form-horizontal" method="Post" action="#">
 
 					<div class="form-group">
-						<label for="Friend_Name" class="cols-sm-2 control-label">Send Friend Quests</label>
+						<label for="Friend_Name" class="cols-sm-2 control-label">Create Account</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
@@ -78,17 +90,14 @@
 			</div>
 		</ul>
 		<ul>
-			Pending Friend Request
+			Pending Employees Request
 			
 		</ul>
 		<ul>
-			{% for t in TOPIC_DICT["Friends"] %}
+			{% for t in TOPIC_DICT["Employees"] %}
 			<li><a href="{{t[1]}}">{{t[0]}}</a></li>
 			{% endfor %}
 		</ul>
-	</div>
-	<div role="tabpanel" class="tab-pane fade" id="Detector">
-		You are a Good Boy!
 	</div>
   </div>
 
