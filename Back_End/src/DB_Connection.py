@@ -212,8 +212,18 @@ class DB_Connection:
 		finally:
 			return result
 	
-
-
+	def create_request(self,data_hash):
+		try:
+			table_name 	= self.__table_hash["request"]
+			sql_command     = """INSERT INTO {} (account_id,start_time,end_time,description,date_str) VALUES
+			(%(account_id)s, %(start_time)s,%(end_time)s,%(description)s,%(date_str)s);""".format(table_name)
+			sql_values 	= data_hash
+			result 		= self.__execute(sql_command,sql_values)
+		except Exception as e:
+			result 		= False	
+			#raise e
+		finally:
+			return result		
 
 
 

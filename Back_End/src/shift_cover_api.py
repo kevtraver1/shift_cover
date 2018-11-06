@@ -65,7 +65,17 @@ class Get_Account(Resource):
         username        = request.args.get('username', None)
         response        = connection.get_account(username)
         return response#json.dumps(response, indent=4, sort_keys=True, default=str)
-
+class Create_Request(Resource):
+    def get(self):
+        connection      = DB_Connection()
+        account_id      = request.args.get('account_id', None)
+        start_time      = request.args.get('start_time', None)
+        end_time        = request.args.get('end_time', None)
+        date            = request.args.get('date', None)
+        description     = request.args.get('description', None)
+        data_hash       = {"account_id":account_id,"start_time";start_time,"end_time":end_time,"date":date,"description":description}
+        response        = connection.get_account(data_hash)
+        return response#json.dumps(response, indent=4, sort_keys=True, default=str)
 class Connection_Test(Resource):
     def get(self):
         return "HELLO WORLD HERE I COME!!!"
