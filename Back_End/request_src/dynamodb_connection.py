@@ -18,6 +18,8 @@ class DB_Connection:
 									"relationship":"relationship",
 									"posts":"posts",
 									"messages":"messages"}
+		dynamodb = boto3.resource('dynamodb',region_name='us-east-1') 
+
 	def __start_connection(self):
 		'''
 			Creates connection to database creating __conn(connection)
