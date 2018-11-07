@@ -67,7 +67,7 @@ def dashboard():
         
         print(request.form)
         #use decorator for validate forms
-        
+
         if request.method == "POST":
             if request.form["post_id"] == "request_time":
                 print("WOOOOOOOOO")
@@ -157,6 +157,11 @@ TOPIC_DICT = {"Profile":{"Username":"username",
 	["Title of Post","url for S3 images","kevin",["comment 1","comment 2"]],
 	["Good Boy","url for S3 images","kevin",[["ttravers","thats a good boy"],["ECuso","aww so handsome"]]],
 	["Good Girl","url for S3 images","kevin",[["ttravers","thats a good girl"],["ECuso","aww so pretty"],["puppy","awwwwwwww"]]]
+],
+"Requests":[
+    ["11/7/2018","07:00:00","03:00:00","ME mum is having a birthday"],
+    ["12/8/2018","08:15:00","04:15:00","IM DRINKING BOYS"],
+    ["01/9/2019","09:30:00","05:30:00","I HAVE a job interview... i mean im sick cough cough"]
 ],
                   "Friends":[["Trinity Travers","/ttravers/"],
                              ["Ellie Cuso","ECuso"],

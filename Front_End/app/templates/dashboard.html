@@ -46,16 +46,71 @@
 		</ul>
 	</div>
     <div role="tabpanel" class="tab-pane fade" id="Feed">
-		</p>Your FEED</p>
+    <script type="text/javascript">
+	 // Wait for the page to load first
+	window.onload = function() {
+
+		//Get a reference to the link on the page
+		// with an id of "mylink"
+		var a = document.getElementsByClassName("request_container");
+
+		//Set code to run when the link is clicked
+		// by assigning a function to "onclick"
+		a.onclick = function() {
+
+			// Your code here...
+			alert(a.getAttribute("value"))
+			console.log(a)
+			var item = document.getElementById('accept_request');
+			item.setAttribute('hidden', 'false')
+			item.setAttribute('title', 'FOOBAR')
+			//If you don't want the link to actually 
+			// redirect the browser to another page,
+			// "google.com" in our example here, then
+			// return false at the end of this block.
+			// Note that this also prevents event bubbling,
+			// which is probably what we want here, but won't 
+			// always be the case.
+			return false;
+		}
+	}
+		function request_form(data_arr) {
+			// Your code here...
+			console.log(data_arr)
+			console.log(data_arr[0])
+			var item = document.getElementById('accept_request');
+			console.log(item)
+			item.removeAttribute("hidden");
+			document.getElementById('accept_start_time').value=data_arr[1]
+			document.getElementById('accept_end_time').value=data_arr[2]
+			document.getElementById('accept_description').value=data_arr[3]
+			document.getElementById('accept_date').value=data_arr[0]
+
+			//If you don't want the link to actually 
+			// redirect the browser to another page,
+			// "google.com" in our example here, then
+			// return false at the end of this block.
+			// Note that this also prevents event bubbling,
+			// which is probably what we want here, but won't 
+			// always be the case.
+			return false;
+		}
+		</script>
+		</p>Your Request FEED</p>
 		<ul>
-			{% for t in TOPIC_DICT["Feed"] %}
-				<li><a href="{{t[1]}}">{{t[0]}}</a></li>
+			{% include 'accept_request.html' %}
+		</ul>
+		<ul>
+			<div class="container" id="request_container">
+			{% for t in TOPIC_DICT["Requests"] %}
+				<li><a id="request" value="{{t[0]}}" onclick="request_form({{t}})">{{t[0]}}</a></li>
 			{% endfor %}
+			</div>
 		</ul>
 	</div>
     <div role="tabpanel" class="tab-pane fade" id="Create_Request">
 		<ul>
-			{% include 'dashboard_post.html' %}
+			{% include 'create_request.html' %}
 		</ul>
 	</div>
 	<div role="tabpanel" class="tab-pane fade" id="Schedule">
