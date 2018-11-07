@@ -70,7 +70,9 @@ def dashboard():
 
         if request.method == "POST":
             if request.form["post_id"] == "request_time":
-                print("WOOOOOOOOO")
+                print("create")
+            if request.form["post_id"] == "accept_request":
+                print("accept")
             if "friend_request" in request.form:
                 print(request)
                 print("Friend SENT")
