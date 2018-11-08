@@ -3,7 +3,7 @@ from flask import Flask, render_template
 import pymysql
 #store number 
 #Add email
-class DB_Connection:
+class Dynamodb_Connection:
 	def __init__(self):
 		'''
 			set up private variables needed for connection/access to database
