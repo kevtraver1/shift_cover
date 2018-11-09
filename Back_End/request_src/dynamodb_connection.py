@@ -5,24 +5,35 @@ from botocore.exceptions import ClientError
 
 class Dynamodb_Connection:
 	def __init__(self):
+		self.__dynamodb 	= boto3.resource('dynamodb',region_name='us-east-1') 
+		self.__table 		= self.__dynamodb.Table('shift_request')
+		self.__scheme 		= {"date":None,"start_time":None}
+	def get_item(self,data_hash):
 		try:
-			self.data = "INITIATING CONNECTION"
-		except Exception as e:
-			raise "Error in init {}".format(e)
-
-	def insert_row(self):
-		try:
-			step = 0
-			dynamodb = boto3.resource('dynamodb',region_name='us-east-1') 
-			step = 1
-
-			table = dynamodb.Table('shift_request')
-			step = 2
-			response = table.get_item(
-				Key={"request_id": "Kevin","date":"today"}
+			response = self.__table.get_item(
+				Key=data_hash
 			)
-			step = 3
-
 		except (ClientError, Exception)as e:
-			return e.response['Error']['Message']
+			return "error getting item {}".format(e.response['Error']['Message'])
 		return response['Item']
+	def insert_item(self,data_hash):
+		try:
+			result = self.__table.put_item(
+				Item=data_hash
+			)
+		except (ClientError, Exception)as e:
+			result = 0
+			return e.response['Error']['Message']
+		return result
+
+
+	def delete_item(self,data_hash):
+		try:
+			response = self.__table.delete_item(
+				Key=data_hash
+			)
+		except (ClientError, Exception)as e:
+			return "error deleting item {}".format(e.response['Error']['Message'])
+		return response
+	def get_items(self,data_hash):
+		pass
