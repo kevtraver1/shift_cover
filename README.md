@@ -2,4 +2,4 @@ This Project goal is to create a platform for users to help find someone at thei
 
 This project will user Docker Containers, Github to travis-ci to automate deployment, AWS lambda, AWS S3 Buckets, AWS RDS, AWS EC2, Flask.
 
-Personal goal is to learn full stack development using new technologies
+MVP is completed, but started a training with AWS and found out better ways to do this project. Will refactor each part of this project and work on fronend.
